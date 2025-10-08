@@ -31,3 +31,27 @@ largest_increasing_subsequence(arr) # Output: [1,2,3,5,6]
 arr = []
 largest_increasing_subsequence(arr)  # Output: []
 
+def largest_increasing_subarray(arr):
+    if not arr:
+        return []
+    
+    n = len(arr)
+    dp = [1]*n
+    max_length = 0
+    end_index = 0
+
+    for i in range(1,len(arr)):
+        if arr[i] <= arr[i-1]:
+            dp[i] = 1
+        else:
+            dp[i] = dp[i-1]+1
+        
+        if dp[i] > max_length:
+            max_length = dp[i]
+            end_index = i
+    
+    return arr[end_index-max_length+1:end_index+1]
+
+largest_increasing_subarray([1,2,3,2,7,5,6]) 
+largest_increasing_subarray([1, 2, 3, 2, 3, 4, 5])
+largest_increasing_subarray([1, 2, 2, 3])
