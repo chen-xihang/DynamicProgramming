@@ -31,3 +31,50 @@ if __name__ == "__main__":
     print(largest_subarray_sum(arr))  # Output: 23
     print(largest_subarray_sum_optimised(arr))  # Output: 23
 # This function finds the largest sum of a contiguous subarray using dynamic programming.   
+
+def largest_subarray_sum_0(arr):
+    if not arr:
+        return []
+    n = len(arr)
+    dp = [0]*(n+1)
+    dp[0] = 0
+    dp[1] = arr[0]
+    start_index = -1
+    end_index = -1
+    length = end_index-start_index 
+    for i in range(2, n+1):
+        dp[i] = dp[i-1] + arr[i-1]
+        for j in range(i):
+            if dp[i] == dp[j] and (i-j>length):
+                start_index = j
+                end_index = i
+                length = max(length, i-j)
+    return arr[start_index:end_index]
+
+tests = [
+    {"arr": [1, -1], "expected": [1, -1], "reason": "whole array sums to 0"},
+    {"arr": [1, 2, -3, 3], "expected": [1, 2, -3], "reason": "middle section sums to 0"},
+    {"arr": [15, -2, 2, -8, 1, 7, 10, 23], "expected": [-2, 2, -8, 1, 7], "reason": "classic example"},
+    {"arr": [1, 2, 3], "expected": [], "reason": "no zero-sum subarray"},
+    {"arr": [4, -1, -3], "expected": [4, -1, -3], "reason": "whole array sums to 0"},
+    {"arr": [], "expected": [], "reason": "empty input"},
+    {"arr": [0, 0, 0, 0], "expected": [0, 0, 0, 0], "reason": "all zeros → full array"},
+    {"arr": [3, -3, 2, 1], "expected": [-3, 2, 1], "reason": "longest zero-sum subarray is [-3,2,1] (length 3)"},
+    {"arr": [2, 1, -3], "expected": [2, 1, -3], "reason": "whole array sums to 0"},
+    {"arr": [6, 3, -1, -3, 4, -2, 2, 4, 6, -12, -7],
+     "expected": [6, 3, -1, -3, 4, -2, 2, 4, 6, -12, -7],
+     "reason": "entire array sums to 0 (longest)"},
+]
+
+
+if __name__ == "__main__":
+    for i, t in enumerate(tests, 1):
+        arr = t["arr"]
+        expected = t["expected"]
+        result = largest_subarray_sum_0(arr)
+        status = "✅" if result == expected else "❌"
+        print(f"Test {i}: {status}")
+        print(f"  Input:     {arr}")
+        print(f"  Expected:  {expected}")
+        print(f"  Got:       {result}")
+        print(f"  Reason:    {t['reason']}\n")
