@@ -32,6 +32,7 @@ if __name__ == "__main__":
     print(largest_subarray_sum_optimised(arr))  # Output: 23
 # This function finds the largest sum of a contiguous subarray using dynamic programming.   
 
+# O(n^2) using dynamic programming
 def largest_subarray_sum_0(arr):
     if not arr:
         return []
@@ -50,6 +51,30 @@ def largest_subarray_sum_0(arr):
                 end_index = i
                 length = max(length, i-j)
     return arr[start_index:end_index]
+
+# O(n) using Hashmap
+def largest_subarray_sum_0_optimised(arr):
+    if not arr:
+        return []
+    hashmap = {0:-1}
+    prefix_sum = 0
+    max_length = 0
+    best_start = -1
+    best_end = -1
+    for i, n in enumerate(arr):
+        prefix_sum = prefix_sum + n
+        if prefix_sum in hashmap:
+            current_length = i-hashmap[prefix_sum]
+            if current_length > max_length:
+                max_length = current_length
+                best_start = hashmap[prefix_sum]
+                best_end = i
+        else:
+            hashmap[prefix_sum] = i
+    return arr[best_start+1:best_end+1]
+
+largest_subarray_sum_0_optimised([-1,1,-1,1, 0, 0, 2])
+
 
 tests = [
     {"arr": [1, -1], "expected": [1, -1], "reason": "whole array sums to 0"},
