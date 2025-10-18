@@ -15,3 +15,5 @@ def dice_game(n):
 dice_game(0)
 dice_game(1)
 dice_game(2)
+dice_game(3)
+dice_game(6)
